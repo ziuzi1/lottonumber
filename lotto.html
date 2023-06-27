@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>로또 번호 생성기</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .lotto-header {
+            margin-bottom: 20px;
+        }
+
+        .lotto-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lotto-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .lotto-ball {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 5px;
+            font-weight: bold;
+            font-size: 20px;
+            color: #FFF;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        .btn-generate {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #000;
+            cursor: pointer;
+            margin-top: 50px;
+        }
+
+        .btn-generate.animate {
+            animation: blink 0.3s infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lotto-container">
+        <div class="lotto-header">
+            <h1>로또 번호 생성기</h1>
+        </div>
+        <div class="lotto-numbers"></div>
+        <div class="lotto-footer">
+            <button class="btn-generate">번호 생성</button>
+        </div>
+    </div>
+
+    <script>
+        function generateLottoNumbers() {
+            var gameCount = 5;
+            var numbers = [];
+
+            while (numbers.length < 6 * gameCount) {
+                var randomNumber = Math.floor(Math.random() * 45) + 1;
+                if (!numbers.includes(randomNumber)) {
+                    numbers.push(randomNumber);
+                }
+            }
+
+            return numbers;
+        }
+
+        function displayLottoNumbers() {
+            var lottoContainer = document.querySelector('.lotto-numbers');
+            lottoContainer.innerHTML = '';
+
+            var lottoNumbers = generateLottoNumbers();
+            for (var i = 0; i < lottoNumbers.length; i++) {
+                var ball = document.createElement('div');
+                ball.className = 'lotto-ball';
+                ball.style.backgroundColor = getBallColor(lottoNumbers[i]);
+                ball.innerText = lottoNumbers[i];
+                lottoContainer.appendChild(ball);
+            }
+
+            var btnGenerate = document.querySelector('.btn-generate');
+            btnGenerate.classList.add('animate');
+            setTimeout(function() {
+                btnGenerate.classList.remove('animate');
+            }, 800);
+        }
+
+        function getBallColor(number) {
+            if (number <= 10) {
+                return '#fbc400'; // 1 ~ 10: yellow
+            } else if (number <= 20) {
+                return '#69c8f2'; // 11 ~ 20: blue
+            } else if (number <= 30) {
+                return '#ff7272'; // 21 ~ 30: red
+            } else if (number <= 40) {
+                return '#aaa'; // 31 ~ 40: gray
+            } else {
+                return '#b0d840'; // 41 ~ 45: green
+            }
+        }
+
+        var btnGenerate = document.querySelector('.btn-generate');
+        btnGenerate.addEventListener('click', displayLottoNumbers);
+
+        // Initial display
+        displayLottoNumbers();
+    </script>
+</body>
+</html>
